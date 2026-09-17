@@ -1,4 +1,4 @@
-name: Build
+name: Build and Release
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'v*.*'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -58,8 +58,7 @@ jobs:
 
           go build -trimpath -o "${output}" ./cmd/tproxy-server
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload binary to release
+        uses: softprops/action-gh-release@v2
         with:
-          name: tproxy-server-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: tproxy-server-*
+          files: tproxy-server-*
